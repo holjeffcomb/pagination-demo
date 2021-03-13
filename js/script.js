@@ -9,6 +9,19 @@ For assistance:
    Check out the "Project Resources" section of the Instructions tab: https://teamtreehouse.com/projects/data-pagination-and-filtering#instructions
    Reach out in your Slack community: https://treehouse-fsjs-102.slack.com/app_redirect?channel=unit-2
 */
+const header = document.querySelector('.header');
+const searchBarHtml = `
+   <label for="search" class="student-search">
+      <span>Search by name</span>
+      <input id="search" placeholder="Search by name...">
+      <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
+   </label>
+`;
+header.insertAdjacentHTML('beforeend', searchBarHtml);
+
+const search = document.querySelector('#search');
+const submit = document.querySelector('.student-search button');
+const ul = document.querySelector('.student-list');
 
 const itemsPerPage = 9;
 
@@ -19,7 +32,7 @@ This function will create and insert/append the elements needed to display a "pa
 function showPage(list, page) {
    const startIndex = (page * itemsPerPage) - itemsPerPage;
    const endIndex = page * itemsPerPage;
-   const ul = document.querySelector('.student-list');
+   
    ul.innerHTML = '';
 
    for (let i = 0; i < list.length; i++) {
@@ -44,7 +57,6 @@ function showPage(list, page) {
       }
    }
 }
-
 
 /*
 Create the `addPagination` function
@@ -71,25 +83,11 @@ function addPagination(list) {
          const pageNum = parseInt(e.target.innerText);
          document.querySelector('.active').className = '';
          e.target.className = 'active';
-         showPage(data, pageNum);
+         showPage(list, pageNum);
       }
       
    });
 }
-
-
-const header = document.querySelector('.header');
-const searchBarHtml = `
-   <label for="search" class="student-search">
-      <span>Search by name</span>
-      <input id="search" placeholder="Search by name...">
-      <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
-   </label>
-`;
-header.insertAdjacentHTML('beforeend', searchBarHtml);
-
-const search = document.querySelector('#search');
-const submit = document.querySelector('.student-search button');
 
 function setMatch(searchInput, names) {
    for (let i = 0; i < names.length; i++) {
@@ -102,11 +100,10 @@ function setMatch(searchInput, names) {
    }
 }
 
-submit.addEventListener('click', (e) => {
-
+function perfSearch() {
    if (search.value.length === 0) {
-      showPage(data, 1);
-      addPagination(data, 1);
+         showPage(data, 1);
+         addPagination(data, 1);
    } else {
       setMatch(search, data);
       let searchResults = [];
@@ -117,30 +114,22 @@ submit.addEventListener('click', (e) => {
             count++;
          }
       }
-      showPage(searchResults, 1);
-      addPagination(searchResults);
+      if (searchResults.length === 0) {
+         ul.innerText = 'No Results Found';
+         addPagination(searchResults);
+      } else {
+         showPage(searchResults, 1);
+         addPagination(searchResults);
+      }
    }
+}
+
+submit.addEventListener('click', () => {
+   perfSearch();
 });
 
 search.addEventListener('keyup', () => {
-
-   if (search.value.length === 0) {
-      showPage(data, 1);
-      addPagination(data, 1);
-   } else {
-      setMatch(search, data);
-      let searchResults = [];
-      let count = 0;
-      for (let i = 0; i < data.length; i++){
-         if (data[i].isMatch) {
-            searchResults[count] = data[i];
-            count++;
-         }
-      }
-      showPage(searchResults, 1);
-      addPagination(searchResults);
-   }
-
+   perfSearch();
 });
 
 // Call functions

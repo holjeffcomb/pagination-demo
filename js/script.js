@@ -90,13 +90,13 @@ function addPagination(list) {
 }
 
 // Helper function for perfSearch() to set isMatch property
-function setMatch(searchInput, names) {
-   for (let i = 0; i < names.length; i++) {
-      names[i].isMatch = false;
-      const fullName = `${names[i].name.first.toLowerCase()} ${names[i].name.last.toLowerCase()}`;
+function setMatch(searchInput, list) {
+   for (let i = 0; i < list.length; i++) {
+      list[i].isMatch = false;
+      const fullName = `${list[i].name.first.toLowerCase()} ${list[i].name.last.toLowerCase()}`;
 
       if ((searchInput.value.length !== 0) && (fullName.includes(searchInput.value.toLowerCase()))) {
-         names[i].isMatch = true;
+         list[i].isMatch = true;
       }
    }
 }

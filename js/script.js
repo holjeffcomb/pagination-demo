@@ -89,6 +89,7 @@ function addPagination(list) {
    });
 }
 
+// Helper function for perfSearch() to set isMatch property
 function setMatch(searchInput, names) {
    for (let i = 0; i < names.length; i++) {
       names[i].isMatch = false;
@@ -100,10 +101,11 @@ function setMatch(searchInput, names) {
    }
 }
 
+// Function to perform the search
 function perfSearch() {
    if (search.value.length === 0) {
          showPage(data, 1);
-         addPagination(data, 1);
+         addPagination(data);
    } else {
       setMatch(search, data);
       let searchResults = [];
@@ -124,10 +126,12 @@ function perfSearch() {
    }
 }
 
+// Event listener for submit action
 submit.addEventListener('click', () => {
    perfSearch();
 });
 
+// Event listener for key up action on search bar
 search.addEventListener('keyup', () => {
    perfSearch();
 });
